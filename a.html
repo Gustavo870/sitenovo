@@ -1,0 +1,208 @@
+Abaixo estão os dois arquivos separados: **index.html** e **styles.css**. Copie cada bloco para o respectivo arquivo (index.html e styles.css) no seu projeto.
+
+---
+
+```html
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MarketVan — Escolha sua van como passageiro</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <div>
+        <h1>MarketVan</h1>
+        <p class="lead">Escolha uma van para se tornar passageiro — reserve seu assento em poucos passos.</p>
+      </div>
+      <div class="meta-small">Protótipo • Sem pagamentos • Dados locais</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="controls">
+      <input class="search" id="search" placeholder="Procure por local, modelo ou motorista" />
+      <select id="sort">
+        <option value="relevance">Mais relevantes</option>
+        <option value="priceAsc">Preço (cres.)</option>
+        <option value="priceDesc">Preço (dec.)</option>
+        <option value="seats">Mais assentos</option>
+      </select>
+      <select id="filterSeats">
+        <option value="any">Qualquer assento</option>
+        <option value="1">1+</option>
+        <option value="2">2+</option>
+        <option value="3">3+</option>
+      </select>
+      <button class="primary" id="reset">Mostrar tudo</button>
+    </div>
+
+    <section id="vansGrid" class="grid" aria-live="polite"></section>
+
+    <section class="bookings">
+      <h3>Suas reservas locais</h3>
+      <div id="bookingsList">
+        <p class="muted">Nenhuma reserva ainda — escolha uma van para se juntar.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true">
+    <div class="modal" id="modal">
+      <h2>Reservar assento</h2>
+      <p id="modalVanInfo" class="meta">Informações da van</p>
+      <form id="bookingForm">
+        <div class="form-row">
+          <div class="form-col">
+            <label for="name">Seu nome</label>
+            <input id="name" required />
+          </div>
+          <div class="form-col">
+            <label for="phone">Telefone</label>
+            <input id="phone" placeholder="(99) 9 9999-9999" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-col">
+            <label for="pickup">Ponto de encontro</label>
+            <input id="pickup" placeholder="Ex: Praça central" required />
+          </div>
+          <div class="form-col-small">
+            <label for="seats">Assentos</label>
+            <select id="seats"> <option>1</option><option>2</option><option>3</option></select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-col">
+            <label for="date">Data e horário</label>
+            <input id="date" type="datetime-local" required />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn join">Confirmar reserva</button>
+          <button type="button" class="btn" id="cancel">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">Dica: este é um protótipo. Para ligar com um backend real, você pode trocar o localStorage por chamadas a uma API.</div>
+  </footer>
+
+  <script>
+    // Dados de vans (mock)
+    const vans = [
+      {id:'v1',name:'Van Comfort 12', driver:'Marcos Silva', seats:6, price:25, route:'Centro → Vila Nova', img:'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=1000&q=60', eta:'07:30',notes:'Ar-condicionado, espaço para malas'},
+      {id:'v2',name:'Van Família 15', driver:'Ana Pereira', seats:8, price:30, route:'Estação → Bairro Alto', img:'https://images.unsplash.com/photo-1571607382589-6f8f7b6d8f6b?auto=format&fit=crop&w=1000&q=60', eta:'08:10',notes:'Cadeiras confortáveis, Wi-Fi'},
+      {id:'v3',name:'Van Econômica', driver:'João Souza', seats:4, price:18, route:'Universidade → Centro', img:'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1000&q=60', eta:'07:45',notes:'Ótima para trajetos curtos'},
+      {id:'v4',name:'Van Lux', driver:'Mariana Costa', seats:10, price:45, route:'Aeroporto → Hotel', img:'https://images.unsplash.com/photo-1563720227114-1f39fdbb2fb7?auto=format&fit=crop&w=1000&q=60', eta:'09:00',notes:'Refeição inclusa, tomadas'},
+      {id:'v5',name:'Van Noturna', driver:'Carlos N.', seats:5, price:28, route:'Barra → Centro', img:'https://images.unsplash.com/photo-1505575967451-39a3d24f4e99?auto=format&fit=crop&w=1000&q=60', eta:'23:00',notes:'Viagens noturnas seguras'}
+    ];
+
+    const grid = document.getElementById('vansGrid');
+    const search = document.getElementById('search');
+    const sort = document.getElementById('sort');
+    const filterSeats = document.getElementById('filterSeats');
+    const reset = document.getElementById('reset');
+    const overlay = document.getElementById('overlay');
+    const modalVanInfo = document.getElementById('modalVanInfo');
+    const bookingForm = document.getElementById('bookingForm');
+    const bookingsList = document.getElementById('bookingsList');
+    const cancelBtn = document.getElementById('cancel');
+
+    let currentVan = null;
+
+    function renderVans(list){
+      grid.innerHTML = '';
+      if(list.length === 0){ grid.innerHTML = '<p class="muted">Nenhuma van encontrada.</p>'; return }
+      list.forEach(v => {
+        const card = document.createElement('article'); card.className='card';
+        card.innerHTML = `
+          <img src="${v.img}" alt="${v.name} — ${v.route}" />
+          <div class="card-body">
+            <div>
+              <div class="title">${v.name}</div>
+              <div class="meta">${v.route} • Motorista: ${v.driver}</div>
+            </div>
+            <div class="meta">Assentos disponíveis: ${v.seats} • Preço por assento: R$ ${v.price}</div>
+            <div class="actions">
+              <button class="btn" onclick="showDetails('${v.id}')">Detalhes</button>
+              <button class="btn join" onclick="openBooking('${v.id}')">Entrar como passageiro</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      })
+    }
+
+    function showDetails(id){
+      const v = vans.find(x=>x.id===id);
+      alert(`${v.name} — ${v.route}\nMotorista: ${v.driver}\n${v.notes}\nHorário estimado: ${v.eta}`)
+    }
+
+    function openBooking(id){
+      currentVan = vans.find(x=>x.id===id);
+      modalVanInfo.textContent = `${currentVan.name} — ${currentVan.route} • Motorista: ${currentVan.driver}`;
+      overlay.classList.add('active');
+    }
+
+    cancelBtn.addEventListener('click', ()=> overlay.classList.remove('active'));
+
+    bookingForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const pickup = document.getElementById('pickup').value;
+      const seats = document.getElementById('seats').value;
+      const date = document.getElementById('date').value;
+
+      const booking = {id:Date.now(), vanId:currentVan.id, vanName:currentVan.name, name, phone, pickup, seats, date};
+      const saved = JSON.parse(localStorage.getItem('mv_bookings')||'[]');
+      saved.push(booking);
+      localStorage.setItem('mv_bookings', JSON.stringify(saved));
+      overlay.classList.remove('active');
+      renderBookings();
+    })
+
+    function renderBookings(){
+      const saved = JSON.parse(localStorage.getItem('mv_bookings')||'[]');
+      if(saved.length===0){ bookingsList.innerHTML = '<p class="muted">Nenhuma reserva ainda — escolha uma van para se juntar.</p>'; return }
+      bookingsList.innerHTML = '';
+      saved.forEach(b=>{
+        const el = document.createElement('div'); el.className='booking-item';
+        el.innerHTML = `<div><strong>${b.vanName}</strong><div class="meta">${b.date} — ${b.pickup}</div></div><div class="meta-small">${b.name}</div>`;
+        bookingsList.appendChild(el);
+      })
+    }
+
+    function applyFilters(){
+      let list = [...vans];
+      const q = search.value.trim().toLowerCase();
+      if(q) list = list.filter(v => (v.name+v.route+v.driver).toLowerCase().includes(q));
+      const seatFilter = filterSeats.value;
+      if(seatFilter !== 'any') list = list.filter(v => v.seats >= Number(seatFilter));
+      const s = sort.value;
+      if(s==='priceAsc') list.sort((a,b)=>a.price-b.price);
+      if(s==='priceDesc') list.sort((a,b)=>b.price-a.price);
+      if(s==='seats') list.sort((a,b)=>b.seats-b.seats);
+      renderVans(list);
+    }
+
+    search.addEventListener('input', applyFilters);
+    sort.addEventListener('change', applyFilters);
+    filterSeats.addEventListener('change', applyFilters);
+    reset.addEventListener('click', ()=>{search.value='';sort.value='relevance';filterSeats.value='any';applyFilters();});
+
+    // init
+    applyFilters();
+    renderBookings();
+  </script>
+</body>
+</html>
