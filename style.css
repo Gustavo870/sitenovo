@@ -17,12 +17,13 @@ body {
 
 /* Cabeçalho */
 header {
-  background: #2563eb;
-  color: white;
+  background: #ffffff; /* fundo branco */
+  color: #1e293b;       /* texto escuro */
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 header h1 {
@@ -30,7 +31,7 @@ header h1 {
 }
 
 nav a {
-  color: white;
+  color: #2563eb;
   margin-left: 1rem;
   text-decoration: none;
   font-weight: 500;
@@ -42,10 +43,11 @@ nav a:hover {
 
 /* Hero */
 .hero {
-  background: linear-gradient(to right, #3b82f6, #60a5fa);
-  color: white;
+  background: #ffffff; /* fundo branco */
+  color: #1e293b;       /* texto escuro */
   text-align: center;
   padding: 3rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .hero h2 {
@@ -55,6 +57,7 @@ nav a:hover {
 
 .hero p {
   font-size: 1.1rem;
+  color: #374151;
 }
 
 /* Lista de vans */
@@ -77,11 +80,12 @@ main {
 }
 
 .van-card {
-  background: #ffffff; /* fundo branco */
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
+  border: 1px solid #e5e7eb;
 }
 
 .van-card:hover {
@@ -99,14 +103,15 @@ main {
 }
 
 .info h3 {
-  color: #111827; /* texto escuro */
+  color: #111827;
   margin-bottom: 0.5rem;
+  font-size: 1.1rem;
 }
 
 .info p {
   font-size: 0.95rem;
   margin-bottom: 0.4rem;
-  color: #374151; /* cinza escuro para contraste */
+  color: #374151;
 }
 
 button {
@@ -126,15 +131,16 @@ button:hover {
 
 /* Rodapé */
 footer {
-  background: #1e293b;
-  color: white;
+  background: #ffffff;
+  color: #1e293b;
   text-align: center;
   padding: 1.5rem;
   margin-top: 2rem;
+  border-top: 1px solid #e5e7eb;
 }
 
 footer a {
-  color: #93c5fd;
+  color: #2563eb;
   text-decoration: none;
 }
 
@@ -155,21 +161,24 @@ footer a:hover {
   }
 }
 
-/* Estilos para avaliação.html */
+/* Avaliação.html */
 .header {
   padding: 48px 24px 16px;
   text-align: center;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .header h1 {
   margin: 0 0 8px;
   font-size: 2rem;
   letter-spacing: 0.5px;
+  color: #1e293b;
 }
 
 .header p {
   margin: 0;
-  color: #374151; /* texto secundário escuro */
+  color: #374151;
 }
 
 .container {
@@ -185,7 +194,7 @@ footer a:hover {
 }
 
 .card {
-  background: #ffffff; /* fundo branco */
+  background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
   overflow: hidden;
@@ -215,12 +224,12 @@ footer a:hover {
   margin: 4px 0 8px;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #111827; /* texto escuro */
+  color: #111827;
 }
 
 .card-text {
   margin: 10px 0 0;
-  color: #374151; /* cinza escuro */
+  color: #374151;
   line-height: 1.4;
   font-size: 0.95rem;
 }
@@ -238,15 +247,16 @@ footer a:hover {
   gap: 8px;
   align-items: baseline;
   font-size: 0.95rem;
-  color: #1e293b; /* notas visíveis */
+  color: #1e293b;
 }
 
 .footer {
   padding: 24px;
   text-align: center;
-  color: #6b7280; /* cinza médio */
+  color: #6b7280;
   border-top: 1px solid #e5e7eb;
   margin-top: 20px;
+  background: #ffffff;
 }
 
 
