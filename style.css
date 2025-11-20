@@ -252,3 +252,24 @@ footer {
   background: #ffffff;
   border-top: none; /* REMOVIDO QUALQUER BORDA */
 }
+/* Container do botão */
+.btn-container {
+  text-align: center;
+  margin: 30px 0;
+}
+
+/* Estilo do botão geral */
+.btn-geral {
+  background-color: #1883c2;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-geral:hover {
+  background-color: #0f6a9d;
+}
