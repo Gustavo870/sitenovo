@@ -258,18 +258,27 @@ footer {
   margin: 30px 0;
 }
 
-/* Estilo do botão geral */
+.btn-container {
+  text-align: center;
+  margin: 40px 0;
+}
+
 .btn-geral {
-  background-color: #1883c2;
-  color: white;
+  background-color: #1f6bff;   /* Azul da imagem */
+  color: #ffffff;
   border: none;
-  padding: 12px 25px;
+  padding: 15px 40px;
   font-size: 1.1rem;
-  border-radius: 8px;
+  font-weight: 700;             /* Negrito */
+  border-radius: 12px;          /* Borda arredondada */
   cursor: pointer;
-  transition: 0.3s;
+  width: 80%;                   /* Botão grande */
+  max-width: 500px;             /* Travar limite */
+  transition: 0.2s ease-in-out;
+  display: block;
+  margin: 0 auto;
 }
 
 .btn-geral:hover {
-  background-color: #0f6a9d;
+  background-color: #1554d4;    /* Tom mais escuro no hover */
 }
