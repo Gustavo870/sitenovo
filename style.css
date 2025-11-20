@@ -23,6 +23,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
+  border-bottom: none; /* REMOVIDA LINHA BRANCA */
 }
 
 header h1 {
@@ -46,6 +47,7 @@ nav a:hover {
   color: #1e293b;
   text-align: center;
   padding: 3rem 1rem;
+  border-bottom: none; /* REMOVIDA LINHA BRANCA */
 }
 
 .hero h2 {
@@ -77,14 +79,13 @@ main {
   gap: 1.5rem;
 }
 
-/* CARD DAS VANS */
 .van-card {
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s;
-  border: none; /* REMOVIDA BORDA */
+  border: none; /* REMOVIDO */
 }
 
 .van-card:hover {
@@ -159,6 +160,7 @@ footer {
   padding: 48px 24px 16px;
   text-align: center;
   background: #ffffff;
+  border-bottom: none; /* REMOVIDA LINHA BRANCA */
 }
 
 .header h1 {
@@ -185,14 +187,13 @@ footer {
   gap: 20px;
 }
 
-/* CARD DA AVALIAÇÃO */
 .card {
   background: #ffffff;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: transform 160ms ease, box-shadow 160ms ease;
-  border: none; /* REMOVIDA BORDA */
+  border: none; /* REMOVIDO */
 }
 
 .card:hover {
@@ -205,7 +206,7 @@ footer {
   height: 160px;
   object-fit: cover;
   display: block;
-  border-bottom: none; /* REMOVIDA BORDA */
+  border-bottom: none; /* REMOVIDO */
 }
 
 .card-body {
@@ -249,5 +250,5 @@ footer {
   color: #4b5563;
   margin-top: 20px;
   background: #ffffff;
+  border-top: none; /* REMOVIDO QUALQUER BORDA */
 }
-
